@@ -77,11 +77,11 @@ if __name__ == '__main__':
     check_dir(IMG_PATH)
     meta_data, data = json.load(open("nytimes_metadata.json", 'r', encoding='utf8')), []
     
-    for i in tqdm(meta_data):
+    for i in tqdm(meta_data[ : 2]):
         try:
             get_image(i)
             i['body'] = clean_article(i, get_text(i))
             data.append(i)
         except Exception as e: pass
 
-    json.dump(data, open("nytimes_data.json", 'w', encoding='utf8'))
+    json.dump(data, open("data.json", 'w', encoding='utf8'))
