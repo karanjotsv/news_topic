@@ -78,10 +78,10 @@ if __name__ == '__main__':
     meta_data, data = json.load(open("nytimes_metadata.json", 'r', encoding='utf8')), []
     
     for i in tqdm(meta_data):
-        
-        get_image(i)
-        i['body'] = clean_article(i, get_text(i))
-        data.append(i)
-        # except Exception as e: pass
+        try:
+            get_image(i)
+            i['body'] = clean_article(i, get_text(i))
+            data.append(i)
+        except Exception as e: pass
 
     json.dump(data, open("data.json", 'w', encoding='utf8'))
