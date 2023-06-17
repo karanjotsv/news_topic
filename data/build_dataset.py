@@ -77,7 +77,7 @@ if __name__ == '__main__':
     check_dir(IMG_PATH)
     meta_data, data = json.load(open("nytimes_metadata.json", 'r', encoding='utf8')), []
     
-    for i in tqdm(meta_data[ : 2]):
+    for i in tqdm(meta_data):
         try:
             get_image(i)
             i['body'] = clean_article(i, get_text(i))
