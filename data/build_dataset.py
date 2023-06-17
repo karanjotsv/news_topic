@@ -17,16 +17,16 @@ def resolveComponents(url):
     path = posixpath.normpath(parsed.path)
     
     if parsed.path.endswith("/"): path += "/"
-    clean = parsed._replace(path)
+    clean = parsed._replace(path=path)
 
     return clean.geturl()
 
 
 def clean_text(txt):
     txt = re.subn('[“,”]', '"', txt.strip())
-    txt = re.subn('[‘,’]', "'", txt)
+    txt = re.subn('[‘,’]', "'", txt[0])
 
-    return txt
+    return txt[0]
 
 
 def clean_article(item, article):
@@ -36,7 +36,7 @@ def clean_article(item, article):
     article = article.replace(abstract, "").replace(caption, "").replace(tips, "")
     
     while True:
-        if article.startswith("\n"): article = clean_article[1 : ]
+        if article.startswith("\n"): article = article[1 : ]
         else: break
 
     return article
@@ -78,10 +78,10 @@ if __name__ == '__main__':
     meta_data, data = json.load(open("nytimes_metadata.json", 'r', encoding='utf8')), []
     
     for i in tqdm(meta_data):
-        try:
-            get_image(i)
-            i['body'] = clean_article(i, get_text(i))
-            data.append(i)
-        except Exception as e: pass
+        
+        get_image(i)
+        i['body'] = clean_article(i, get_text(i))
+        data.append(i)
+        # except Exception as e: pass
 
     json.dump(data, open("data.json", 'w', encoding='utf8'))
